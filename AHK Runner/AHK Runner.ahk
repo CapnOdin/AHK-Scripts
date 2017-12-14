@@ -1,4 +1,5 @@
 ﻿Menu, Tray, Icon, e.ico
+
 #e::
 	t := Clipboardall
 	Clipboard := ""
@@ -12,3 +13,5 @@
 	}
 	Clipboard := t
 return
+
+#w::WinClose, % "ahk_pid " pid
