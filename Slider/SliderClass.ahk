@@ -1,30 +1,17 @@
 ﻿
-SetBatchLines -1
-
-GuiName := "AHK"
-
-Gui, %GuiName%:New, +Resize, Slider
-Gui, Margin, 0, 0
-ID1 := New Slider(GuiName, "w500 h40", 0, 100, [25, 50, 75], [False, True, True, False])
-ID2 := New Slider(GuiName, "w500 h40", 0, 100, 5)
-ID3 := New Slider(GuiName, "w500 h40", 0, 100)
-Gui, Show, AutoSize
-return
-
-AHKGuiClose(GuiHwnd) {
-	ExitApp
-}
-
 Class Slider {
 	
-	Static ID := 0
-	
-	__New(Gui, guiOptions, Min, Max, StartValues := False, Connections := False) {
-		Static
-		Slider.ID++
-		Gui, %Gui%:Add, ActiveX, % guiOptions " vIE" Slider.ID, Shell.Explorer
-		__var__ := "IE" Slider.ID
-		this.IE := %__var__%
+	__New(Gui := 1, guiOptions := "", Min := 0, Max := 100, StartValues := False, Connections := False, CallBack := False) {
+		if(!(guiOptions ~= "w\d+")) {
+			guiOptions .= " w500"
+		}
+		if(!(guiOptions ~= "h\d+")) {
+			guiOptions .= " h35"
+		}
+		Gui, %Gui%:Add, ActiveX, % guiOptions " +HwndHwnd", Shell.Explorer
+		GuiControlGet, IE, , % Hwnd
+		this.IE := IE
+		this.CallBack := CallBack
 		this.Navigate()
 		this.AddToGUI(Min, Max, StartValues, Connections)
 	}
@@ -34,25 +21,48 @@ Class Slider {
 		this.Count := 0
 		
 		this.IE.Document.body.style.overflow := "hidden"
-		this.IE.Document.body.style.backgroundColor := "#F0F0F0"
 		
 		Segments := this.GetSegments(StartValues, Min, Max)
 		Connections := this.GetConnections(Connections)
 		
-		strID := "ahk_func" Slider.ID
-		
-		this.IE.Document.parentWindow.ahk_func := ObjBindMethod(this, "GetVal") ;Func("GetValues").Bind(this)
+		this.IE.Document.parentWindow.ahk_func := ObjBindMethod(this, "OnChange")
 		
 		this.IE.Document.parentWindow.eval("var mys = new Slider({'min': [" Min "],'max': [" Max "]}, [" Segments "], [" Connections "]);")
+		;this.IE.Document.parentWindow.eval("var mys = new Slider2();")
+		this.SetColour(0xF0F0F0)
 	}
 	
-	GetVal(values) {
+	SetColour(Background := False, Segments := False) {
+		if(Background) {
+			this.IE.Document.body.style.background := Format("#{:06X}", Background)
+		}
+		if(Segments) {
+			connections := this.IE.Document.parentWindow.eval("mys.connect;")
+			if(IsObject(Segments)) {
+				loop % connections.length {
+					if(A_Index <= Segments.Length()) {
+						connections[A_Index-1].style.background := Format("#{:06X}", Segments[A_Index])
+					}
+				}
+			} else {
+				loop % connections.length {
+					connections[A_Index-1].style.background := Format("#{:06X}", Segments)
+				}
+			}
+		}
+	}
+	
+	OnChange(values) {
 		loop % values.length {
 			if(this.Values[A_Index-1] != values[A_Index-1]) {
-				ToolTip, % values[A_Index-1]
+				this.Change := A_Index-1
+				Break
 			}
 		}
 		this.Values := values
+		if(this.CallBack) {
+			this.CallBack(this)
+		}
 	}
 	
 	Navigate() {
