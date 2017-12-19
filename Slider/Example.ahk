@@ -19,11 +19,14 @@ Slider4.SetColour(0x6F0000, [0x6F0050, 0x6F0050])
 
 Slider5 := New Slider(GuiName, , , , , , Func("Display"))
 Slider5.SetColour(0x6F0050, 0x6F0000)
+
+Gui, %GuiName%:Add, Text, vNum xs w50 x225 Center, 000
 Gui, Show, AutoSize
 return
 
 Display(obj) {
-	ToolTip, % obj.Values[obj.Change]
+	Global Num, GuiName
+	GuiControl, %GuiName%:, Num, % obj.Values[obj.Change]
 }
 
 AHKGuiClose(GuiHwnd) {
