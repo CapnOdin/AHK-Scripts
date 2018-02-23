@@ -8,7 +8,8 @@
 	noUiSlider.create(this.slider, {
 		'start': start,
 		'connect': connect,
-		'range': range
+		'range': range,
+		'behaviour': 'tap-drag' // Move handle on tap, bar is draggable
 	});
 
 	this.connect = this.slider.querySelectorAll('.noUi-connect');

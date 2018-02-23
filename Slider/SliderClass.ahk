@@ -32,6 +32,10 @@ Class Slider {
 		this.SetColour(0xF0F0F0)
 	}
 	
+	SetValues(values) {
+		this.IE.Document.parentWindow.eval("mys.slider.noUiSlider.set([" this.StrJoin(values, ", ") "]);")
+	}
+	
 	SetColour(Background := False, Segments := False) {
 		if(Background) {
 			this.IE.Document.body.style.background := Format("#{:06X}", Background)
