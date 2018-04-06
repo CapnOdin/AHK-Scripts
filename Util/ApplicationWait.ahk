@@ -27,7 +27,7 @@ Class ApplicationWaitModalNotActive extends ApplicationWait {
 
 Class ApplicationWait {
 	
-	__New(window, callback, interval := 0) {
+	__New(window, callback, interval := 20) {
 		this.window := window
 		this.callback := callback
 		this.timer := ObjBindMethod(this, "TimerFunc")
