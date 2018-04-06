@@ -27,9 +27,10 @@ Class ApplicationWaitModalNotActive extends ApplicationWait {
 
 Class ApplicationWait {
 	
-	__New(window, callback, interval := 20) {
+	__New(window, callback, interval := 20, condition := False) {
 		this.window := window
 		this.callback := callback
+		this.condition := condition
 		this.timer := ObjBindMethod(this, "TimerFunc")
 		this.On(interval)
 	}
@@ -40,8 +41,11 @@ Class ApplicationWait {
 	}
 	
 	TimerFunc() {
-		if(this.Check(this.GetHwnd(), WinActive("A"))) {
-			this.Success()
+		hwnd := this.GetHwnd(), active := WinActive("A")
+		if(this.Check(hwnd, active)) {
+			if(!this.condition || this.condition.Call(hwnd, active)) {
+				this.Success()
+			}
 		}
 	}
 	
