@@ -3,25 +3,25 @@
 
 Class ApplicationWaitActive extends ApplicationWait {
 	Check(hwnd, active) {
-		return active = hwnd || ApplicationWait_GetAncestor(active) = hwnd
+		return active = hwnd || this.GetAncestor(active) = hwnd
 	}
 }
 
 Class ApplicationWaitNotActive extends ApplicationWait {
 	Check(hwnd, active) {
-		return active != hwnd && ApplicationWait_GetAncestor(active) != hwnd && active != 0x0
+		return active != hwnd && this.GetAncestor(active) != hwnd && active != 0x0
 	}
 }
 
 Class ApplicationWaitModalActive extends ApplicationWait {
 	Check(hwnd, active) {
-		return active != hwnd && ApplicationWait_GetAncestor(active) = hwnd
+		return active != hwnd && this.GetAncestor(active) = hwnd
 	}
 }
 
 Class ApplicationWaitModalNotActive extends ApplicationWait {
 	Check(hwnd, active) {
-		return active = hwnd || ApplicationWait_GetAncestor(active) != hwnd
+		return active = hwnd || this.GetAncestor(active) != hwnd
 	}
 }
 
@@ -31,6 +31,7 @@ Class ApplicationWait {
 		this.window := window
 		this.callback := callback
 		this.timer := ObjBindMethod(this, "TimerFunc")
+		ObjRelease(this)
 		this.On(interval)
 	}
 	
@@ -60,5 +61,11 @@ Class ApplicationWait {
 			return hwnd
 		}
 		return this.window
+	}
+	
+	Destroy() {
+		this.On(False)
+		this.timer := ""
+		ObjRelease(this)
 	}
 }
