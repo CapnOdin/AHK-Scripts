@@ -31,7 +31,6 @@ Class ApplicationWait {
 		this.window := window
 		this.callback := callback
 		this.timer := ObjBindMethod(this, "TimerFunc")
-		ObjRelease(this)
 		this.On(interval)
 	}
 	
