@@ -69,6 +69,6 @@ Class ApplicationWait {
 	Destroy() {
 		this.On(False)
 		this.timer := ""
-		ObjRelease(this)
+		;ObjRelease(this)
 	}
 }
