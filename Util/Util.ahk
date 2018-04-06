@@ -98,7 +98,11 @@ Util_GetPars() {
 	return _pars
 }
 
-RectangleIntersection(x1, y1, w1, h1, x2, y2, w2, h2) {
+Util_Distance(x1, y1, x2, y2) {
+	return Sqrt((x2 - x1)**2 + (y2 - y1)**2)
+}
+
+Util_RectangleIntersection(x1, y1, w1, h1, x2, y2, w2, h2) {
 	x := Max(x1, x2)
 	y := Max(y1, y2)
 	w := Min(x1+w1-x, x2+w2-x)
@@ -108,3 +112,12 @@ RectangleIntersection(x1, y1, w1, h1, x2, y2, w2, h2) {
 	}
 	return False
 }
+
+Util_Clamp(val, min, max) {
+	return Min(Max(val, min), max)
+}
+
+Util_ToHex(number) {
+	return Format("0x{:x}", number)
+}
+
