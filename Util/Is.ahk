@@ -1,8 +1,9 @@
-﻿IsOfType(val, lst*) {
+﻿
+Is_OfType(val, lst*) {
 	return __is(False, val, lst*)
 }
 
-IsOfTypes(val, lst*) {
+Is_OfTypes(val, lst*) {
 	return __is(True, val, lst*)
 }
 
