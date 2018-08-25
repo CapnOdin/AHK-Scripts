@@ -1,6 +1,6 @@
 ﻿Menu, Tray, Icon, js.ico
 Gui, Add, ActiveX, vpwb, Shell.Explorer
-pwb.Navigate("about:<!DOCTYPE HTML><head><meta http-equiv=""X-UA-Compatible"" content=""IE=Edge""><script>window.onerror = function(message, url, lineNumber) {return true;};</script></head>")
+pwb.Navigate("about:<!DOCTYPE HTML><head><meta http-equiv=""X-UA-Compatible"" content=""IE=Edge""><script>window.onerror = function(message, url, lineNumber) {return true;};var mod = function(x, n){return ((x%n)+n)%n;};</script></head>")
 
 #x::
     t := Clipboardall
