@@ -6,12 +6,15 @@
 	Send, ^c
 	ClipWait, 0.5
 	if(Clipboard) {
-		f := FileOpen("tmp.ahk", "w")
+		f := FileOpen("tmp.ahk", "w", "UTF-8")
 		f.Write(Clipboard)
 		f.Close()
-		Run, % A_AHKPath " """ A_ScriptDir "\tmp.ahk"""
+		Run, % A_AHKPath " """ A_ScriptDir "\tmp.ahk""", , , pid
 	}
 	Clipboard := t
 return
 
-#w::WinClose, % "ahk_pid " pid
+#w::
+	DetectHiddenWindows On
+	WinClose, % "ahk_pid " pid
+return
